@@ -1,29 +1,42 @@
-
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Random;
+
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 import static io.restassured.RestAssured.when;
+import static org.hamcrest.Matchers.equalTo;
 
-public class DesafioCBTestAPI {
+public class DesafioCBTestAPI extends UrlBaseTestAPI{
 
-    String urlBase = "https://dummyjson.com/products";
+    private static final String ADD_PRODUTO_ENDPOINT = "/add";
+    private static final String ATUALIZA_PRODUTO_ENDPOINT = ("/" + IdRandom());
+    private static final String DELETAR_PRODUTO_ENDPOINT = ("/3");
+
+
+    private static String IdRandom (){
+        String valor;
+        for (; true; ){
+            String[] a = {"1", "2", "3", "4"};
+            Random r = new Random();
+            int b = r.nextInt(a.length);
+            valor = a[b];
+            return valor;
+        }
+    }
+
 
     public String lerJson(String caminhoJson) throws IOException {
-
         return new String(Files.readAllBytes(Paths.get(caminhoJson)));
-
     }
 
     @Test
     public void buscarProduto(){
-
         when()
-                .get(urlBase)
+                .get()
         .then()
-                .log().all()
                 .statusCode(200)
                 .body("products[0].title", equalTo("Essence Mascara Lash Princess"))
                 .body("products[0].id",equalTo(1))
@@ -34,18 +47,14 @@ public class DesafioCBTestAPI {
     @Test
     public void adicionarProduto() throws IOException {
         String JsonBody = lerJson("docJson/addProduto.json");
-        String addProduto = "/add";
 
         given()
-                .contentType("application/json")
-                .log().all()
                 .body(JsonBody)
 
         .when()
-                .post(urlBase + addProduto)
+                .post(ADD_PRODUTO_ENDPOINT)
 
         .then()
-                .log().all()
                 .statusCode(201)
                 .body("title",equalTo("Camarao do rei"))
                 .body("id",equalTo(195))
@@ -55,45 +64,35 @@ public class DesafioCBTestAPI {
     }
 
     @Test
-    public void atualizarProdutoTotal() throws IOException {
-        String JsonBory = lerJson("docJson/atualizarProdutoTotal.json");
-        String id = "1";
+    public void atualizarProdutoPUT() throws IOException {
+        String JsonBory = lerJson("docJson/atualizarProdutoPUT.json");
 
         given()
-                .contentType("application/json")
-                .log().all()
                 .body(JsonBory)
 
         .when()
-                .put(urlBase + "/" + id)
+                .put(ATUALIZA_PRODUTO_ENDPOINT)
 
         .then()
-                .log().all()
                 .statusCode(200)
                 .body("title",equalTo("camarao da rainha"))
-                .body("id",equalTo(1))
                 .body("price",equalTo(10.99F))
                 .body("category",equalTo("camarao"));
 
     }
 
     @Test
-    public void atualizarProdutoParcial() throws IOException {
-        String JsonBory = lerJson("docJson/atualizarProdutoParcial.json");
-        String id = "2";
+    public void atualizarProdutoPATCH() throws IOException {
+        String JsonBory = lerJson("docJson/atualizarProdutoPATCH.json");
 
         given()
-                .contentType("application/json")
-                .log().all()
                 .body(JsonBory)
 
         .when()
-                .patch(urlBase + "/" + id)
+                .patch(ATUALIZA_PRODUTO_ENDPOINT)
 
         .then()
-                .log().all()
                 .statusCode(200)
-                .body("id",equalTo(2))
                 .body("price",equalTo(59.99F))
                 .body("category",equalTo("camarao"));
 
@@ -101,17 +100,10 @@ public class DesafioCBTestAPI {
 
     @Test
     public void excluirProduto(){
-        String id = "3";
-
-        given()
-                .contentType("application/json")
-                .log().all()
-
-        .when()
-                .delete(urlBase + "/" + id)
+        when()
+                .delete(DELETAR_PRODUTO_ENDPOINT)
 
         .then()
-                .log().all()
                 .statusCode(200)
                 .body("id", equalTo (3))
                 .body("isDeleted", equalTo(true))
