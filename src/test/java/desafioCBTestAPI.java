@@ -9,7 +9,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.when;
 import static org.hamcrest.Matchers.equalTo;
 
-public class DesafioCBTestAPI extends UrlBaseTestAPI{
+public class desafioCBTestAPI extends urlBaseTestAPI {
 
     private static final String ADD_PRODUTO_ENDPOINT = "/add";
     private static final String ATUALIZA_PRODUTO_ENDPOINT = ("/" + IdRandom());
@@ -33,7 +33,7 @@ public class DesafioCBTestAPI extends UrlBaseTestAPI{
     }
 
     @Test
-    public void buscarProduto(){
+    public void CT_001_buscarProduto(){
         when()
                 .get()
         .then()
@@ -45,7 +45,7 @@ public class DesafioCBTestAPI extends UrlBaseTestAPI{
     }
 
     @Test
-    public void adicionarProduto() throws IOException {
+    public void CT_002_adicionarProduto() throws IOException {
         String JsonBody = lerJson("docJson/addProduto.json");
 
         given()
@@ -64,7 +64,7 @@ public class DesafioCBTestAPI extends UrlBaseTestAPI{
     }
 
     @Test
-    public void atualizarProdutoPUT() throws IOException {
+    public void CT_003_atualizarProdutoPUT() throws IOException {
         String JsonBory = lerJson("docJson/atualizarProdutoPUT.json");
 
         given()
@@ -82,7 +82,7 @@ public class DesafioCBTestAPI extends UrlBaseTestAPI{
     }
 
     @Test
-    public void atualizarProdutoPATCH() throws IOException {
+    public void CT_004_atualizarProdutoPATCH() throws IOException {
         String JsonBory = lerJson("docJson/atualizarProdutoPATCH.json");
 
         given()
@@ -99,7 +99,7 @@ public class DesafioCBTestAPI extends UrlBaseTestAPI{
     }
 
     @Test
-    public void excluirProduto(){
+    public void CT_005_excluirProduto(){
         when()
                 .delete(DELETAR_PRODUTO_ENDPOINT)
 

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeAll;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.requestSpecification;
 
-public class UrlBaseTestAPI {
+public class urlBaseTestAPI {
 
     @BeforeAll
     public static void setup(){
