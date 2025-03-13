@@ -46,7 +46,7 @@ public class desafioCBTestAPI extends urlBaseTestAPI {
 
     @Test
     public void CT_002_adicionarProduto() throws IOException {
-        String JsonBody = lerJson("docJson/addProduto.json");
+        String JsonBody = lerJson("docJson/addProdutoPost.json");
 
         given()
                 .body(JsonBody)
